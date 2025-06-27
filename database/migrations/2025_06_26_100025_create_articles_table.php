@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('title')->index();
             $table->text('description');
             $table->text('content');
-            $table->text('web_url')->unique(); // text, because some sources have really long URLs
+            $table->string('web_url')->unique();
             $table->text('featured_image_url'); // text, because some sources have really long URLs
             $table->string('author')->default('Staff Reporter')->index();
-            $table->dateTime('published_at');
+            $table->dateTimeTz('published_at');
 
             $table->timestamps();
         });

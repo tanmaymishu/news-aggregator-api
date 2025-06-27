@@ -58,7 +58,7 @@ class TheGuardian extends NewsSource implements Sourcable
             'author' => $article['fields']['byline'] ?? 'Staff Reporter',
             'web_url' => $article['webUrl'] ?? '',
             'featured_image_url' => $article['fields']['thumbnail'] ?? '',
-            'published_at' => $article['webPublicationDate'] ?? now()->toDateString(),
+            'published_at' => date('Y-m-d H:i:s', strtotime($article['webPublicationDate'] ?? now()->toDateString())),
         ];
     }
 }

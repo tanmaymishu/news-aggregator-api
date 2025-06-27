@@ -2,6 +2,8 @@
 
 namespace App\Services\News;
 
+use Illuminate\Support\Carbon;
+
 class NewsApi extends NewsSource implements Sourcable
 {
     public function __construct()
@@ -60,7 +62,7 @@ class NewsApi extends NewsSource implements Sourcable
             'author' => $article['author'] ?? 'Staff Reporter',
             'web_url' => $article['url'] ?? '',
             'featured_image_url' => $article['urlToImage'] ?? '',
-            'published_at' => $article['publishedAt'] ?? now()->toDateString(),
+            'published_at' => date('Y-m-d H:i:s', strtotime($article['publishedAt'] ?? now()->toDateString())),
         ];
     }
 }

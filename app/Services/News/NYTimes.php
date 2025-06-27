@@ -61,7 +61,7 @@ class NYTimes extends NewsSource implements Sourcable
             'author' => $article['byline']['original'] ?? 'Staff Reporter',
             'web_url' => $article['web_url'] ?? '',
             'featured_image_url' => $article['multimedia']['default']['url'] ?? '',
-            'published_at' => $article['pub_date'] ?? now()->toDateString(),
+            'published_at' => date('Y-m-d H:i:s', strtotime($article['pub_date'] ?? now()->toDateString())),
         ];
     }
 }
