@@ -35,4 +35,22 @@ return [
         ],
     ],
 
+    'news' => [
+        \App\News\NewsSource::NEWSAPI_ID => [
+            'base_url' => 'https://newsapi.org/v2',
+            'key' => env('NEWSAPI_KEY'),
+            'page_size' => 100,
+        ],
+        \App\News\NewsSource::NYTIMES_ID => [
+            'base_url' => 'https://api.nytimes.com',
+            'key' => env('NYTIMES_KEY'),
+            'page_size' => 10,
+        ],
+        \App\News\NewsSource::THEGUARDIAN_ID => [
+            'base_url' => 'https://content.guardianapis.com',
+            'key' => env('THEGUARDIAN_KEY'),
+            'page_size' => 100,
+        ],
+    ]
+
 ];
