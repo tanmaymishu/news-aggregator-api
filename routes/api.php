@@ -14,7 +14,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/login', [LoginController::class, 'store'])->name('login');
 
     // Protected Routes
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('auth:sanctum')->middleware('throttle:60,1')->group(function () {
         Route::get('/ping', function () {
             return ['message' => 'pong'];
         });
