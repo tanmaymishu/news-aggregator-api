@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
     // Public Routes
-    Route::post('/register', RegistrationController::class);
-    Route::post('/login', [LoginController::class, 'store']);
+    Route::post('/register', RegistrationController::class)->name('register');
+    Route::post('/login', [LoginController::class, 'store'])->name('login');
 
     // Protected Routes
     Route::middleware('auth:sanctum')->group(function () {
