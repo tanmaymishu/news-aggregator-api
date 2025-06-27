@@ -1,6 +1,6 @@
 <?php
 
-namespace App\News;
+namespace App\Services\News;
 
 interface Sourcable
 {

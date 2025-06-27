@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\News\Sourcable;
+use App\Services\News\Sourcable;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
@@ -38,7 +38,9 @@ class FetchNews extends Command
             $filteredSources = collect(self::sources);
         }
 
+        $this->info('Fetching new articles. This may take a while, please be patient.');
         $filteredSources->each(function ($source) {
+            $this->info("Fetching for source {$source}");
             $this->collectFromDataSource(app()->make($source));
         });
     }

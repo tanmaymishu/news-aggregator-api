@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\Author;
 use App\Models\Category;
 use App\Models\Source;
+use Illuminate\Support\Facades\Cache;
 
 class SyncArticlesAction
 {
@@ -34,5 +35,10 @@ class SyncArticlesAction
             ['name'],
             ['name'],
         );
+
+        Cache::remember('articles', now()->addHour(), fn() => Article::simplePaginate());
+        Cache::remember('sources', now()->addHour(), fn() => Source::all());
+        Cache::remember('categories', now()->addHour(), fn() => Category::all());
+        Cache::remember('authors', now()->addHour(), fn() => Author::all());
     }
 }

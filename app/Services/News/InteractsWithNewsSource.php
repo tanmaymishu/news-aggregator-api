@@ -1,6 +1,6 @@
 <?php
 
-namespace App\News;
+namespace App\Services\News;
 
 use App\Actions\SyncArticlesAction;
 use Illuminate\Http\Client\Response;

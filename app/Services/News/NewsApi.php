@@ -1,6 +1,6 @@
 <?php
 
-namespace App\News;
+namespace App\Services\News;
 
 class NewsApi extends NewsSource implements Sourcable
 {
