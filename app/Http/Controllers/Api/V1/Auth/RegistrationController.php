@@ -22,5 +22,4 @@ class RegistrationController
             'message' => 'Successfully Registered!',
         ], 201);
     }
-
 }

@@ -11,7 +11,7 @@ trait InteractsWithNewsSource
     public function normalize(): NewsSource
     {
         $this->articles = collect($this->searchResults)
-            ->map(fn($article) => $this->mapArticle($article))
+            ->map(fn ($article) => $this->mapArticle($article))
             ->toArray();
 
         return $this;
@@ -19,14 +19,13 @@ trait InteractsWithNewsSource
 
     public function save(): NewsSource
     {
-        (new SyncArticlesAction())->handle($this->articles);
+        (new SyncArticlesAction)->handle($this->articles);
 
         return $this;
     }
 
     public function fetch(string $path): Response
     {
-        return Http::retry(3, 3000, throw: false)->get($this->baseUrl . $path, $this->queryParams);
+        return Http::retry(3, 3000, throw: false)->get($this->baseUrl.$path, $this->queryParams);
     }
-
 }

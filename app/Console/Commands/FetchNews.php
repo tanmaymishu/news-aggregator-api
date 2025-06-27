@@ -52,7 +52,6 @@ class FetchNews extends Command
             ->save();
     }
 
-
     private function validateSources(): Collection
     {
         $args = $this->argument('source');
@@ -63,7 +62,7 @@ class FetchNews extends Command
         }
 
         // Normalize the sources to lowercase string
-        $sources = collect($args)->map(fn($arg) => strtolower($arg));
+        $sources = collect($args)->map(fn ($arg) => strtolower($arg));
 
         // If args are provided, take the intersected ones and discard
         // any missing source/misspelled source.

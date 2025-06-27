@@ -31,7 +31,7 @@ class LoginController
                 'access_token' => $token,
                 'token_type' => 'Bearer',
             ],
-            'message' => 'Successfully Logged In!'
+            'message' => 'Successfully Logged In!',
         ], 201);
     }
 

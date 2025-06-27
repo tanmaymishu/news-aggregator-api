@@ -21,7 +21,7 @@ class NewsApi extends NewsSource implements Sourcable
         $this->queryParams['q'] = $query ?? 'headline';
 
         $firstResponse = $this->fetch('/everything');
-        if (!$firstResponse->ok()) {
+        if (! $firstResponse->ok()) {
             throw new \RuntimeException("Failed to fetch articles from NewsApi {$firstResponse->body()}");
         }
         $allResults = $firstResponse->json('articles');
@@ -48,7 +48,6 @@ class NewsApi extends NewsSource implements Sourcable
 
         return $this;
     }
-
 
     public function mapArticle(array $article): array
     {

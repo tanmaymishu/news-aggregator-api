@@ -22,14 +22,14 @@ class TheGuardian extends NewsSource implements Sourcable
     {
         $this->queryParams['q'] = $query ?? '';
         $firstResponse = $this->fetch('/search');
-        if (!$firstResponse->ok()) {
+        if (! $firstResponse->ok()) {
             throw new \RuntimeException("Failed to fetch articles from TheGuardian {$firstResponse->body()}");
         }
 
         $totalPages = $firstResponse->json('response.pages') ?? 0;
         $allResults = $firstResponse->json('response.results');
 
-        for($i = 2; $i <= $totalPages; $i++) {
+        for ($i = 2; $i <= $totalPages; $i++) {
             $this->queryParams['page'] = $i;
             $response = $this->fetch('/search');
 

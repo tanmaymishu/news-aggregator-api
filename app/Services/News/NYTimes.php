@@ -24,14 +24,14 @@ class NYTimes extends NewsSource implements Sourcable
         $this->queryParams['q'] = $query ?? '';
         $firstResponse = $this->fetch($path);
 
-        if (!$firstResponse->ok()) {
+        if (! $firstResponse->ok()) {
             throw new \RuntimeException("Failed to fetch articles from NewsApi {$firstResponse->body()}");
         }
 
         $totalPages = 100; // Enforced by NYTimes API
         $allResults = $firstResponse->json('response.docs');
 
-        for($i = 2; $i <= $totalPages; $i++) {
+        for ($i = 2; $i <= $totalPages; $i++) {
             $this->queryParams['page'] = $i;
 
             $response = $this->fetch($path);

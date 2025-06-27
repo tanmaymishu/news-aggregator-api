@@ -22,7 +22,7 @@ class PreferenceStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sources' => ['sometimes', 'required', 'array']
+            'sources' => ['sometimes', 'required', 'array'],
         ];
     }
 }

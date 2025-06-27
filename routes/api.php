@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\V1\PersonalizedArticleController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\RegistrationController;
 use App\Http\Controllers\Api\V1\AuthorController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\PersonalizedArticleController;
 use App\Http\Controllers\Api\V1\SourceController;
 use Illuminate\Support\Facades\Route;
 

@@ -15,9 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->instance(NewsSource::NEWSAPI_ID, new NewsApi());
-        $this->app->instance(NewsSource::NYTIMES_ID, new NYTimes());
-        $this->app->instance(NewsSource::THEGUARDIAN_ID, new TheGuardian());
+        $this->app->instance(NewsSource::NEWSAPI_ID, new NewsApi);
+        $this->app->instance(NewsSource::NYTIMES_ID, new NYTimes);
+        $this->app->instance(NewsSource::THEGUARDIAN_ID, new TheGuardian);
     }
 
     /**

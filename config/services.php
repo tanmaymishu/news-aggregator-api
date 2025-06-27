@@ -51,6 +51,6 @@ return [
             'key' => env('THEGUARDIAN_KEY'),
             'page_size' => 100,
         ],
-    ]
+    ],
 
 ];
