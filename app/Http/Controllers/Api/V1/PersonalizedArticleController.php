@@ -5,11 +5,18 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Resources\V1\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 
 class PersonalizedArticleController
 {
-    public function index(Request $request)
+    /**
+     * Fetch articles for an authenticated user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function index(Request $request): AnonymousResourceCollection
     {
         $cacheKey = 'articles';
 

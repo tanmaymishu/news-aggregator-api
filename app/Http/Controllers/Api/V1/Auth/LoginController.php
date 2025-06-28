@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Requests\V1\LoginStoreRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -12,8 +13,12 @@ class LoginController
 {
     /**
      * Store a newly created user token.
+     *
+     * @param LoginStoreRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws ValidationException
      */
-    public function store(LoginStoreRequest $request)
+    public function store(LoginStoreRequest $request): JsonResponse
     {
         $user = User::where('email', $request->email)->first();
 
@@ -37,9 +42,12 @@ class LoginController
 
     /**
      * Invalidate the user token.
+     *
+     * @return \Illuminate\Http\Response
      */
     public function destroy()
     {
         Auth::logoutCurrentDevice();
+        return response()->noContent();
     }
 }

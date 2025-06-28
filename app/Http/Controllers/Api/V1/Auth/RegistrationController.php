@@ -4,10 +4,17 @@ namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Requests\V1\RegistrationRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class RegistrationController
 {
-    public function __invoke(RegistrationRequest $request)
+    /**
+     * Register a new user.
+     *
+     * @param RegistrationRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function __invoke(RegistrationRequest $request): JsonResponse
     {
         $user = User::query()->create($request->only(['name', 'email', 'password']));
 
