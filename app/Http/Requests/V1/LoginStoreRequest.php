@@ -24,6 +24,7 @@ class LoginStoreRequest extends FormRequest
         return [
             'email' => ['required', 'email'],
             'password' => ['required'],
+            'remember' => ['sometimes', 'required', 'boolean'],
         ];
     }
 }

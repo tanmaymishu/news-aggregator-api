@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Requests\V1\LoginStoreRequest;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class LoginController
 {
     /**
-     * Store a newly created user token.
+     * Authenticate user and create session.
      *
      * @param LoginStoreRequest $request
      * @return \Illuminate\Http\JsonResponse
@@ -20,34 +19,44 @@ class LoginController
      */
     public function store(LoginStoreRequest $request): JsonResponse
     {
-        $user = User::where('email', $request->email)->first();
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+            $user = Auth::user();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+            if ($request->hasSession()) {
+                $request->session()->regenerate();
+            }
+
+            return response()->json([
+                'data' => [
+                    'user' => $user,
+                    'access_token' => $user->createToken($request->userAgent())->plainTextToken,
+                    'token_type' => 'bearer',
+                ],
+                'message' => 'Successfully Logged In!',
+            ]);
+        } else {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
+                'password' => ['The provided credentials are incorrect.'],
             ]);
         }
-
-        $token = $user->createToken($request->userAgent())->plainTextToken;
-
-        return response()->json([
-            'data' => [
-                'user' => $user,
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-            ],
-            'message' => 'Successfully Logged In!',
-        ], 201);
     }
 
     /**
-     * Invalidate the user token.
+     * Log out the user and invalidate session.
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy(Request $request)
     {
-        Auth::logoutCurrentDevice();
+        if ($request->hasSession()) {
+            Auth::guard('web')->logout();
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+        } else {
+            $request->user()->currentAccessToken()->delete();
+        }
+
         return response()->noContent();
     }
 }

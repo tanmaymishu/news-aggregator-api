@@ -23,6 +23,17 @@ class PreferenceController extends Controller
 
     public function store(PreferenceStoreRequest $request)
     {
-        Auth::user()->preference()->updateOrCreate([]);
+
+        $pref = Preference::updateOrCreate(
+            ['user_id' => Auth::id()],
+            [
+                'user_id' => Auth::id(),
+                'sources' => $request->sources,
+                'authors' => $request->authors,
+                'categories' => $request->categories,
+            ],
+        );
+
+        return response()->json(['preference' => $pref]);
     }
 }

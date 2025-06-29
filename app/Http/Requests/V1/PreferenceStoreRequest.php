@@ -11,7 +11,7 @@ class PreferenceStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,11 @@ class PreferenceStoreRequest extends FormRequest
     {
         return [
             'sources' => ['sometimes', 'required', 'array'],
+            'sources.*' => ['required_with:sources', 'exists:sources,name'],
+            'authors' => ['sometimes', 'required', 'array'],
+            'authors.*' => ['required_with:authors', 'exists:authors,name'],
+            'categories' => ['sometimes', 'required', 'array'],
+            'categories.*' => ['required_with:categories', 'exists:categories,name'],
         ];
     }
 }

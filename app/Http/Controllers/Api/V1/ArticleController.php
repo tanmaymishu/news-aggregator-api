@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 
-class PersonalizedArticleController
+class ArticleController
 {
     /**
      * Fetch articles for an authenticated user.
