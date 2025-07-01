@@ -7,6 +7,7 @@ use App\Http\Requests\V1\PreferenceStoreRequest;
 use App\Models\Preference;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class PreferenceController extends Controller
 {
@@ -23,6 +24,8 @@ class PreferenceController extends Controller
 
     public function update(PreferenceStoreRequest $request)
     {
+        Cache::forget('preferred_articles');
+
         $pref = Preference::updateOrCreate(
             ['user_id' => Auth::id()],
             [

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\V1\AuthorController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\ArticleController;
+use App\Http\Controllers\Api\V1\OwnArticleController;
 use App\Http\Controllers\Api\V1\PreferenceController;
 use App\Http\Controllers\Api\V1\SourceController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,12 @@ Route::prefix('v1')->group(function () {
         return ['message' => 'pong'];
     });
 
+    Route::get('/sources', SourceController::class);
+    Route::get('/categories', CategoryController::class);
+    Route::get('/authors', AuthorController::class);
+    Route::get('/articles', [ArticleController::class, 'index']);
+    Route::get('/articles/{article}', [ArticleController::class, 'show']);
+
     // Protected Routes
     Route::middleware(['throttle:60,1', 'auth:sanctum'])->group(function () {
         Route::get('/me', function () {
@@ -33,12 +40,8 @@ Route::prefix('v1')->group(function () {
 
         Route::delete('/logout', [LoginController::class, 'destroy']);
 
-        Route::get('/articles', [ArticleController::class, 'index']);
-        Route::get('/articles/{article}', [ArticleController::class, 'show']);
+        Route::get('/own-articles', OwnArticleController::class);
 
-        Route::get('/sources', SourceController::class);
-        Route::get('/categories', CategoryController::class);
-        Route::get('/authors', AuthorController::class);
         Route::get('/preferences', [PreferenceController::class, 'show']);
         Route::patch('/preferences', [PreferenceController::class, 'update']);
     });
