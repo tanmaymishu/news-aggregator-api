@@ -36,9 +36,9 @@ class SyncArticlesAction
             ['name'],
         );
 
-        Cache::remember('articles', now()->addHour(), fn () => Article::simplePaginate());
-        Cache::remember('sources', now()->addHour(), fn () => Source::all());
-        Cache::remember('categories', now()->addHour(), fn () => Category::all());
-        Cache::remember('authors', now()->addHour(), fn () => Author::all());
+        Cache::remember('articles', now()->addHour(), fn () => Article::orderBy('published_at', 'desc')->simplePaginate());
+        Cache::remember('sources', now()->addHour(), fn () => Source::latest()->get());
+        Cache::remember('categories', now()->addHour(), fn () => Category::latest()->get());
+        Cache::remember('authors', now()->addHour(), fn () => Author::latest()->get());
     }
 }

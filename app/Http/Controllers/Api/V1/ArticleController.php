@@ -39,7 +39,7 @@ class ArticleController
                     $request->to_date,
                     fn ($query, $fromDate) => $query
                         ->whereBetween('published_at', [$request->from_date ?? today()->subDay(), $request->to_date])
-                )->simplePaginate();
+                )->orderBy('published_at', 'desc')->simplePaginate();
         });
 
         return ArticleResource::collection($articles)->additional([
