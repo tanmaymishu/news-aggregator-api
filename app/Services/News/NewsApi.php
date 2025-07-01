@@ -2,8 +2,6 @@
 
 namespace App\Services\News;
 
-use Illuminate\Support\Carbon;
-
 class NewsApi extends NewsSource implements Sourcable
 {
     public function __construct()
