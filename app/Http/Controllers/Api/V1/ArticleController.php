@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Cache;
 
 class ArticleController
 {
+    public function show(Request $request, Article $article)
+    {
+        return response()->json(['data' => $article, 'message' => 'Article Retrieved!']);
+    }
+
     /**
      * Fetch articles for an authenticated user.
      *

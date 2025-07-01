@@ -34,6 +34,8 @@ Route::prefix('v1')->group(function () {
         Route::delete('/logout', [LoginController::class, 'destroy']);
 
         Route::get('/articles', [ArticleController::class, 'index']);
+        Route::get('/articles/{article}', [ArticleController::class, 'show']);
+
         Route::get('/sources', SourceController::class);
         Route::get('/categories', CategoryController::class);
         Route::get('/authors', AuthorController::class);
