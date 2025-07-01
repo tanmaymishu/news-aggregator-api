@@ -29,19 +29,19 @@ class Article extends Model
     #[Scope]
     protected function preferred(Builder $query, Preference $preference): Builder
     {
-        if ($preference->sources) {
-            $query->whereIn('source', $preference->sources);
-        }
+        return $query->where(function ($query) use ($preference) {
+            if ($preference->sources) {
+                $query->whereIn('source', $preference->sources);
+            }
 
-        if ($preference->categories) {
-            $query->orWhereIn('category', $preference->categories);
-        }
+            if ($preference->categories) {
+                $query->orWhereIn('category', $preference->categories);
+            }
 
-        if ($preference->authors) {
-            $query->orWhereIn('author', $preference->authors);
-        }
-
-        return $query;
+            if ($preference->authors) {
+                $query->orWhereIn('author', $preference->authors);
+            }
+        });
     }
 }
 

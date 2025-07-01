@@ -37,15 +37,9 @@ class ArticleController
                 ->when($request->source, fn($query, $source) => $query->where('source', $source))
                 ->when($request->category, fn($query, $category) => $query->where('category', $category))
                 ->when($request->author, fn($query, $author) => $query->where('author', $author))
-                ->when(
-                    $request->from_date,
-                    fn($query, $fromDate) => $query
-                        ->whereBetween('published_at', [$request->from_date, $request->to_date ?? today()->subDay()])
-                )->when(
-                    $request->to_date,
-                    fn($query, $fromDate) => $query
-                        ->whereBetween('published_at', [$request->from_date ?? today()->subDay(), $request->to_date])
-                )->orderBy('published_at', 'desc')->simplePaginate();
+                ->when($request->from_date, fn($query, $fromDate) => $query->where('published_at', '>=', $fromDate))
+                ->when($request->to_date, fn($query, $toDate) => $query->where('published_at', '<=', $toDate))
+                ->orderByDesc('published_at')->simplePaginate();
         });
 
         return ArticleResource::collection($articles)->additional([
