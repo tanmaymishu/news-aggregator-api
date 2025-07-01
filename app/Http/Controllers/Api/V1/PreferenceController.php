@@ -16,14 +16,13 @@ class PreferenceController extends Controller
     public function show(Request $request)
     {
         return response()->json([
-            'data' => Auth::user()->preference(), // Used for dropdown, small dataset (50-80 entries), skipped pagination
+            'data' => Auth::user()->preference,
             'message' => 'Fetched all sources',
         ]);
     }
 
-    public function store(PreferenceStoreRequest $request)
+    public function update(PreferenceStoreRequest $request)
     {
-
         $pref = Preference::updateOrCreate(
             ['user_id' => Auth::id()],
             [
@@ -34,6 +33,6 @@ class PreferenceController extends Controller
             ],
         );
 
-        return response()->json(['preference' => $pref]);
+        return response()->json(['data' => $pref, 'message' => 'Preferences updated!']);
     }
 }

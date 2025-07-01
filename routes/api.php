@@ -31,6 +31,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/sources', SourceController::class);
         Route::get('/categories', CategoryController::class);
         Route::get('/authors', AuthorController::class);
-        Route::post('/preferences', [PreferenceController::class, 'store']);
+        Route::get('/preferences', [PreferenceController::class, 'show']);
+        Route::patch('/preferences', [PreferenceController::class, 'update']);
     });
 });
