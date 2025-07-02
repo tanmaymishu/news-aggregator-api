@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Requests\V1\RegistrationRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 
 class RegistrationController
@@ -19,6 +20,8 @@ class RegistrationController
         $user = User::query()->create($request->only(['name', 'email', 'password']));
 
         $token = $user->createToken($request->userAgent())->plainTextToken;
+
+        event(new Registered($user));
 
         return response()->json([
             'data' => [

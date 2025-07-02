@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Cache;
 
 class ArticleController
 {
+    /**
+     * Fetch details for single article.
+     *
+     * @param Request $request
+     * @param Article $article
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show(Request $request, Article $article)
     {
         return response()->json(['data' => $article, 'message' => 'Article Retrieved!']);

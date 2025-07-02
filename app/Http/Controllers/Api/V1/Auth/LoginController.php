@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 class LoginController
 {
     /**
-     * Authenticate user and create session.
+     * Authenticate user and create token/session.
      *
      * @param LoginStoreRequest $request
      * @return \Illuminate\Http\JsonResponse
@@ -33,7 +33,7 @@ class LoginController
                     'token_type' => 'bearer',
                 ],
                 'message' => 'Successfully Logged In!',
-            ]);
+            ], 201);
         } else {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],

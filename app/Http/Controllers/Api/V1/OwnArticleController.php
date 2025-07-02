@@ -28,10 +28,12 @@ class OwnArticleController extends Controller
         $articles = Cache::remember($cacheKey, now()->addHour(), function () use ($request) {
             $query = Article::query();
 
+            // Stick to preferred only, if filters are not provided
             if (!$request->source && !$request->category && !$request->author) {
                 $query = Article::preferred($query, $request->user()->preference);
             }
 
+            // Override the preference with filters
             if ($request->source) {
                 $query->where('source', $request->source);
             }

@@ -13,11 +13,25 @@ use Illuminate\Validation\ValidationException;
 
 class ResetPasswordController extends Controller
 {
+    /**
+     * Show the password reset form.
+     *
+     * @param Request $request
+     * @param string $token
+     * @return \Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|object
+     */
     public function show(Request $request, string $token)
     {
         return redirect(config('app.url') . '/reset-password?token=' . $token . '&email=' . $request->query('email'));
     }
 
+    /**
+     * Reset the password.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws ValidationException
+     */
     public function store(Request $request)
     {
         $request->validate([

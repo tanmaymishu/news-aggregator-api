@@ -12,16 +12,25 @@ use Illuminate\Support\Facades\Cache;
 class PreferenceController extends Controller
 {
     /**
-     * Get the preference of currently logged-in user.
+     * Fetch the preferences of the currently logged-in user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request)
     {
         return response()->json([
             'data' => Auth::user()->preference,
-            'message' => 'Fetched all sources',
+            'message' => 'Fetched preferences',
         ]);
     }
 
+    /**
+     * Update user preferences for custom news feed.
+     *
+     * @param PreferenceStoreRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(PreferenceStoreRequest $request)
     {
         Cache::forget('preferred_articles');
