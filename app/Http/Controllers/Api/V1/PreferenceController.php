@@ -14,7 +14,6 @@ class PreferenceController extends Controller
     /**
      * Fetch the preferences of the currently logged-in user.
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request)
@@ -28,7 +27,6 @@ class PreferenceController extends Controller
     /**
      * Update user preferences for custom news feed.
      *
-     * @param PreferenceStoreRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(PreferenceStoreRequest $request)

@@ -52,4 +52,3 @@ class Article extends Model
         });
     }
 }
-

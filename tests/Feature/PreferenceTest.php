@@ -16,7 +16,7 @@ test('current preference of a logged-in user can be updated', function () {
     Source::factory()->create(['name' => 'BBC News']);
     $response = $this->actingAs($user)
         ->patchJson('/api/v1/preferences', [
-            'sources' => ['BBC News']
+            'sources' => ['BBC News'],
         ]);
 
     $response->assertOk();

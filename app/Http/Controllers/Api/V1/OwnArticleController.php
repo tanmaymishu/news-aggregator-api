@@ -30,7 +30,7 @@ class OwnArticleController extends Controller
      * "per_page": 15,
      * "to": 15
      * }}
-     * @param Request $request
+     *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     #[QueryParameter(name: 'source', description: 'The source from which the articles should be fetched', type: 'string')]
@@ -44,14 +44,14 @@ class OwnArticleController extends Controller
 
         if ($request->query()) {
             $queryParams = implode('|', $request->query());
-            $cacheKey .= ':' . md5($queryParams);
+            $cacheKey .= ':'.md5($queryParams);
         }
 
         $articles = Cache::remember($cacheKey, now()->addHour(), function () use ($request) {
             $query = Article::query();
 
             // Stick to preferred only, if filters are not provided
-            if (!$request->source && !$request->category && !$request->author) {
+            if (! $request->source && ! $request->category && ! $request->author) {
                 $query = Article::preferred($query, $request->user()->preference);
             }
 

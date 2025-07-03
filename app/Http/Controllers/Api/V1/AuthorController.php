@@ -14,8 +14,6 @@ class AuthorController extends Controller
      * List all the authors.
      *
      * @unauthenticated
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(Request $request): JsonResponse
     {

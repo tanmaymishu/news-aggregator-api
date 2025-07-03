@@ -13,8 +13,9 @@ class ForgotPasswordController extends Controller
      * Send password reset link to provided e-mail
      *
      * @unauthenticated
-     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws ValidationException
      */
     public function __invoke(Request $request)

@@ -5,7 +5,7 @@ use App\Models\Article;
 use Illuminate\Support\Facades\Cache;
 
 test('SyncArticleAction can sync the articles', function () {
-    $instance = new SyncArticlesAction();
+    $instance = new SyncArticlesAction;
 
     $instance->handle(
         [

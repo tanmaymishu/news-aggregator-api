@@ -55,4 +55,3 @@ describe('personalized articles', function () {
             ->assertJsonFragment(['data' => $articles->toArray()]);
     });
 });
-

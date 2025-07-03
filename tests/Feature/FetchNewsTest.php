@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 
-
 describe('arguments are valid', function () {
     beforeEach(function () {
         Http::fake([
@@ -32,4 +31,3 @@ describe('arguments are valid', function () {
         expect($output)->toBe(0);
     });
 });
-

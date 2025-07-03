@@ -27,7 +27,9 @@ abstract class NewsSource
     }
 
     abstract protected function configure(): void;
+
     abstract public function mapArticle(array $article): array;
+
     abstract protected function getEndpoint(): string;
 
     use InteractsWithNewsSource;

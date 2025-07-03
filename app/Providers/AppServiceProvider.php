@@ -11,8 +11,6 @@ use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -40,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
             });
 
         VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
-            $exploded = explode("/email/verify", $url);
+            $exploded = explode('/email/verify', $url);
 
             $url = config('app.url').'/email/verify'.$exploded[1];
 

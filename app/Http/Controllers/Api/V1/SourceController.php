@@ -14,8 +14,6 @@ class SourceController extends Controller
      * List all the sources.
      *
      * @unauthenticated
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(Request $request): JsonResponse
     {

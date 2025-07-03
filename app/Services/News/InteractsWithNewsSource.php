@@ -51,7 +51,7 @@ trait InteractsWithNewsSource
 
         $response = $http->get($this->baseUrl.$path, $this->queryParams);
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             logger()->error("Failed to fetch from {$this->baseUrl}{$path}", [
                 'status' => $response->status(),
                 'body' => $response->body(),

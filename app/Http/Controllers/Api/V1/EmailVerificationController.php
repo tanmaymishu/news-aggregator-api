@@ -11,7 +11,6 @@ class EmailVerificationController extends Controller
     /**
      * Mark the user's e-mail as verified.
      *
-     * @param EmailVerificationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function verify(EmailVerificationRequest $request)
@@ -24,7 +23,6 @@ class EmailVerificationController extends Controller
     /**
      * Notify the user by sending verification email.
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function send(Request $request)

@@ -14,8 +14,6 @@ class CategoryController extends Controller
      * List all the categories.
      *
      * @unauthenticated
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(Request $request): JsonResponse
     {

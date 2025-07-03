@@ -23,8 +23,7 @@ class LoginController
      * subsequent requests in the Authorization header as a Bearer token.
      *
      * @unauthenticated
-     * @param LoginStoreRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     *
      * @throws ValidationException
      */
     public function store(LoginStoreRequest $request): JsonResponse

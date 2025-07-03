@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\RegistrationController;
 use App\Http\Controllers\Api\V1\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\V1\AuthorController;
 use App\Http\Controllers\Api\V1\CategoryController;
-use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\EmailVerificationController;
 use App\Http\Controllers\Api\V1\OwnArticleController;
 use App\Http\Controllers\Api\V1\PreferenceController;
@@ -26,7 +26,6 @@ Route::prefix('v1')->group(function () {
         ->middleware('guest')
         ->name('password.reset');
     Route::post('/reset-password', [ResetPasswordController::class, 'store'])->name('password.update');
-
 
     Route::get('/sources', SourceController::class);
     Route::get('/categories', CategoryController::class);
