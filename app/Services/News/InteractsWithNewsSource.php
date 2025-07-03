@@ -87,7 +87,7 @@ trait InteractsWithNewsSource
 
     protected function parseDate(?string $date): string
     {
-        if (!$date) {
+        if (! $date) {
             return now()->format('Y-m-d H:i:s');
         }
 

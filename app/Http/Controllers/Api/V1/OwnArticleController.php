@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\ArticleResource;
 use App\Models\Article;
 use Dedoc\Scramble\Attributes\QueryParameter;
@@ -54,7 +53,7 @@ final class OwnArticleController
 
             // Stick to preferred only, if filters are not provided
             if (! $request->source && ! $request->category && ! $request->author) {
-                $query = Article::query()->preferred($query, $request->user()->preference);
+                $query = $query->preferred($request->user()->preference);
             }
 
             // Override the preference with filters
