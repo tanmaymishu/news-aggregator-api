@@ -52,6 +52,7 @@ final class ArticleController
     #[QueryParameter(name: 'category', description: 'The category from which the articles should be fetched', type: 'string')]
     #[QueryParameter(name: 'from_date', description: 'The starting date since which the articles should be fetched', type: 'string')]
     #[QueryParameter(name: 'to_date', description: 'The ending date till which the articles should be fetched', type: 'string')]
+    #[QueryParameter(name: 'page', description: 'The page number to load the articles from', type: 'integer')]
     public function index(Request $request): AnonymousResourceCollection
     {
         $cacheKey = 'articles';

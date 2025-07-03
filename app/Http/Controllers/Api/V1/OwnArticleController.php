@@ -41,6 +41,7 @@ final class OwnArticleController
     #[QueryParameter(name: 'category', description: 'The category from which the articles should be fetched', type: 'string')]
     #[QueryParameter(name: 'from_date', description: 'The starting date since which the articles should be fetched', type: 'string')]
     #[QueryParameter(name: 'to_date', description: 'The ending date till which the articles should be fetched', type: 'string')]
+    #[QueryParameter(name: 'page', description: 'The page number to load the articles from', type: 'integer')]
     public function __invoke(Request $request)
     {
         $cacheKey = 'preferred_articles:'.\auth()->id();
