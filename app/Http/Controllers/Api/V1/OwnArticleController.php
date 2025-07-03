@@ -54,7 +54,7 @@ final class OwnArticleController
 
             // Stick to preferred only, if filters are not provided
             if (! $request->source && ! $request->category && ! $request->author) {
-                $query = Article::preferred($query, $request->user()->preference);
+                $query = Article::query()->preferred($query, $request->user()->preference);
             }
 
             // Override the preference with filters

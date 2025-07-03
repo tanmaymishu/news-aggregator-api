@@ -26,7 +26,8 @@
         "pestphp/pest": "^3.8",
         "pestphp/pest-plugin-drift": "^3.0",
         "pestphp/pest-plugin-faker": "^3.0",
-        "pestphp/pest-plugin-type-coverage": "^3.5"
+        "pestphp/pest-plugin-type-coverage": "^3.5",
+        "phpstan/phpstan": "^2.1"
     },
     "autoload": {
         "psr-4": {
@@ -63,6 +64,9 @@
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
+        ],
+        "lint": [
+            "./vendor/bin/phpstan analyse app"
         ]
     },
     "extra": {
