@@ -28,9 +28,12 @@ cp .env.example .env
 ```
 
 The following environment variables are required for this app to function:
+
+```
 NEWSAPI_KEY=
 NYTIMES_KEY=
 THEGUARDIAN_KEY=
+```
 
 ### Port configuration:
 
