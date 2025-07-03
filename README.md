@@ -27,23 +27,27 @@ Copy the .env.example file to .env:
 cp .env.example .env
 ```
 
+The following environment variables are required for this app to function:
+NEWSAPI_KEY=
+NYTIMES_KEY=
+THEGUARDIAN_KEY=
+
 ### Port configuration:
 
-By default the .env.example file contains the Laravel Sail environment variables for database (mysql), redis etc.
-Please:
+By default the .env.example file contains the Laravel Sail environment variables for database (mysql), redis etc. using default ports. If you have local instances of mysql and redis running on port 3306 and 6379, you can either:
 
-- either stop your local mysql/redis service if they are running on port 3306 and 6379 on your host machine, or
-- change these two lines in the `docker-compose.yml` file:
+- stop the local services temporarilly (recommended), or
+- change the host port in the docker-compose.yml file:
   
-```diff
-- '${FORWARD_REDIS_PORT:-6379}:6379'
-- '${FORWARD_DB_PORT:-3306}:3306'
-```
-
-```diff
-+ '${FORWARD_REDIS_PORT:-<add-a-different-port-from-local-machine>}:6379'
-+ '${FORWARD_DB_PORT:-<add-a-different-port-from-local-machine>}:3306'
-```
+    ```diff
+    - '${FORWARD_REDIS_PORT:-6379}:6379'
+    - '${FORWARD_DB_PORT:-3306}:3306'
+    ```
+    
+    ```diff
+    + '${FORWARD_REDIS_PORT:-<add-a-different-port-from-local-machine>}:6379'
+    + '${FORWARD_DB_PORT:-<add-a-different-port-from-local-machine>}:3306'
+    ```
 If you have stopped the local mysql and redis services, `docker-compose.yml` file changes won't be necessary as the ports won't conflict.
 
 Finally, please make sure the local port 80 available, as the app will run on port 80.
@@ -90,8 +94,7 @@ The request body is editable. The endpoints are also directly available live at:
 
 ### Running tests
 
-- To run tests with coverage report run the following command:
-
+To run tests with coverage report run the following command:
 
     ./vendor/bin/sail artisan test --coverage
 
@@ -126,19 +129,25 @@ The request body is editable. The endpoints are also directly available live at:
 ### Data Fetching
 - To fetch the news articles from `NewsAPI`, `The Guardian` and `The New York Times`, there is an artisan command:
 
-    ```./vendor/bin/sail artisan news:fetch```
+        ./vendor/bin/sail artisan news:fetch
 
 - It takes an argument of list of sources (newsapi, nytimes, theguardian), and a `--search` option:
 
 
-    ./vendor/bin/sail artisan news:fetch newsapi nytimes theguardian --search=apple
+        ./vendor/bin/sail artisan news:fetch newsapi nytimes theguardian --search=apple
 
 - The `news:fetch` command keeps running in the background every hour using the Laravel Scheduler. To run scheduler locally, run:
 
 
-    ./vendor/bin/sail artisan schedule:work
+        ./vendor/bin/sail artisan schedule:work
 
-- In Production, a cronjob must be set up like this:
+- In Production, a cronjob should be set up like this:
 
         * * * * * cd /path-to-project && php artisan schedule:run >> /dev/null 2>&1
   
+### Deploying on Prod:
+- There is also a `docker-compose.prod.yml` file for deploying the app to a live environment. Although it's not fully production-grade, but can be used for a quick glance. A version of this app is deployed at https://newsapi.tanmaydas.com on a cheapest Hetzner VM. An accompanying NextJS application is also created for consuming the APIs and deployed at https://news.tanmaydas.com using Vercel and managing the DNS through Cloudflare.
+- A Caddyfile is also provided for automatic SSL certificate generation. The domain can be changed before deployment.
+
+- Frontend Repo: https://github.com/tanmaymishu/news
+- Live URL: https://news.tanmaydas.com
