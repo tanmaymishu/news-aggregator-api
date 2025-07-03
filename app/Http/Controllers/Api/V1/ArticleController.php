@@ -47,6 +47,7 @@ final class ArticleController
      * "to": 15
      * }}
      */
+    #[QueryParameter(name: 'keyword', description: 'Search articles by a keyword', type: 'string')]
     #[QueryParameter(name: 'source', description: 'The source from which the articles should be fetched', type: 'string')]
     #[QueryParameter(name: 'author', description: 'The author from which the articles should be fetched', type: 'string')]
     #[QueryParameter(name: 'category', description: 'The category from which the articles should be fetched', type: 'string')]
