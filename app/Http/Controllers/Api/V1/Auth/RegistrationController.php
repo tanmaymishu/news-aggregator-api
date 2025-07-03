@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Requests\V1\RegistrationRequest;
@@ -7,7 +9,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 
-class RegistrationController
+final class RegistrationController
 {
     /**
      * Register a new user.

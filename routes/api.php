@@ -35,11 +35,11 @@ Route::prefix('v1')->group(function () {
 
     // Protected Routes
     Route::middleware(['throttle:60,1', 'auth:sanctum'])->group(function () {
-        Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+        Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'store'])
             ->middleware(['signed'])
             ->name('verification.verify');
 
-        Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])
+        Route::post('/email/verification-notification', [EmailVerificationController::class, 'show'])
             ->middleware(['throttle:6,1'])
             ->name('verification.send');
 

@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-class EmailVerificationController extends Controller
+final class EmailVerificationController
 {
     /**
      * Mark the user's e-mail as verified.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function verify(EmailVerificationRequest $request)
+    public function store(EmailVerificationRequest $request)
     {
         $request->fulfill();
 
@@ -25,7 +26,7 @@ class EmailVerificationController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function send(Request $request)
+    public function show(Request $request)
     {
         $request->user()->sendEmailVerificationNotification();
 

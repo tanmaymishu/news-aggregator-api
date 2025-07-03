@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Exceptions\NewsSourceException;
@@ -7,7 +9,7 @@ use App\Services\News\Sourcable;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
-class FetchNews extends Command
+final class FetchNewsCommand extends Command
 {
     const sources = ['newsapi', 'theguardian', 'nytimes'];
 

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\News;
 
 use App\Exceptions\NewsSourceException;
 
-class TheGuardian extends NewsSource implements Sourcable
+final class TheGuardian extends NewsSource implements Sourcable
 {
     public function search(?string $query): NewsSource
     {

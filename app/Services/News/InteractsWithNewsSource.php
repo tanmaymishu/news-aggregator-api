@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\News;
 
 use App\Actions\SyncArticlesAction;
@@ -85,10 +87,14 @@ trait InteractsWithNewsSource
 
     protected function parseDate(?string $date): string
     {
-        try {
-            return $date ? date('Y-m-d H:i:s', strtotime($date)) : now()->format('Y-m-d H:i:s');
-        } catch (\Exception $e) {
+        if (!$date) {
             return now()->format('Y-m-d H:i:s');
         }
+
+        $timestamp = strtotime($date);
+
+        return $timestamp !== false
+            ? date('Y-m-d H:i:s', $timestamp)
+            : now()->format('Y-m-d H:i:s');
     }
 }

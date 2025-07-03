@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
@@ -9,7 +11,7 @@ use Dedoc\Scramble\Attributes\QueryParameter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
-class OwnArticleController extends Controller
+final class OwnArticleController
 {
     /**
      * Fetch preferred articles of a logged-in user
