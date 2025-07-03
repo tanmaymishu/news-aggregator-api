@@ -1,61 +1,144 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# News Aggregator Backend API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Live Demo:
 
-## About Laravel
+https://news.tanmaydas.com
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## API Docs:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+https://newsapi.tanmaydas.com
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Set Up Project:
 
-## Learning Laravel
+### Clone the repo:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```
+git clone https://github.com/tanmaymishu/news-aggregator-api.git
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Environment Setup:
+CD Into the repo:
+```
+cd news-aggregator-api
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Copy the .env.example file to .env:
+```
+cp .env.example .env
+```
 
-## Laravel Sponsors
+### Port configuration:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+By default the .env.example file contains the Laravel Sail environment variables for database (mysql), redis etc.
+Please:
 
-### Premium Partners
+- either stop your local mysql/redis service if they are running on port 3306 and 6379 on your host machine, or
+- change these two lines in the `docker-compose.yml` file:
+  
+```diff
+- '${FORWARD_REDIS_PORT:-6379}:6379'
+- '${FORWARD_DB_PORT:-3306}:3306'
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```diff
++ '${FORWARD_REDIS_PORT:-<add-a-different-port-from-local-machine>}:6379'
++ '${FORWARD_DB_PORT:-<add-a-different-port-from-local-machine>}:3306'
+```
+If you have stopped the local mysql and redis services, `docker-compose.yml` file changes won't be necessary as the ports won't conflict.
 
-## Contributing
+Finally, please make sure the local port 80 available, as the app will run on port 80.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Installing Dependencies:
 
-## Code of Conduct
+    docker run --rm \
+       -u "$(id -u):$(id -g)" \
+       -v "$(pwd):/var/www/html" \
+       -w /var/www/html \
+       laravelsail/php84-composer:latest \
+       composer install --ignore-platform-reqs
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Launch the app
 
-## Security Vulnerabilities
+To start the docker containers with Laravel Sail in detached mode run:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ./vendor/bin/sail up -d
 
-## License
+The application should be running on http://localhost/
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Migrate and seed the database:
+
+    ./vendor/bin/sail artisan migrate:fresh --seed
+
+### Generate the application key:
+
+    ./vendor/bin/sail artisan key:generate
+
+### Stop the application:
+
+    ./vendor/bin/sail down
+
+### Clearing the cache
+
+    ./vendor/bin/sail artisan cache:clear
+
+### Endpoint testing from the UI
+
+Head over to http://localhost and an interactive API docs page will appear, where you can provide things like route parameters, query parameters, bearer token, request body, etc.
+The request body is editable. The endpoints are also directly available live at: https://newsapi.tanmaydas.com
+
+## Code Quality
+
+### Running tests
+
+- To run tests with coverage report run the following command:
+
+
+    ./vendor/bin/sail artisan test --coverage
+
+### Static analysis
+
+    ./vendor/bin/sail composer lint
+
+### Format
+
+    ./vendor/bin/sail composer format
+
+### GitHub Actions
+
+- GitHub actions are inside `.github/workflows` directory which are run on PR and Push on develop and main branch.
+
+## Implementation Notes
+
+### Caching
+- All Articles are cached for 1 hour. The cache is burst whenever there are new articles fetched by the scheduler.
+- Personalized article cache is burst whenever the user updates their preferences.
+
+### SignUp/SignIn Flow
+- A user can register using `POST /api/v1/register` endpoint and login using `/api/v1/login` endpoint.
+- After registration and initial login, the user will be able to visit routes that do not require e-mail verification (e.g. `/api/v1/me` or `/api/v1/articles`). However, more restrictive resources (e.g. `/api/v1/own-articles`) are protected from unverified users and they will be required to verify their e-mail.
+- For token generation, Laravel Sanctum is utilized. For web clients like browsers, tokens aren't required to be saved in local storage or cookie, they will be taken care of automatically. For REST-Client, Mobile phones tokens are required and will be provided one from `POST /api/v1/login`.
+- The `POST /api/v1/email/verification-notification` endpoint is used to send an e-mail to the user and the e-mail will have a link pointing `GET ${APP_URL}/email/verify/{id}/{hash}` for verifying the email.
+- Password reset endpoints also work in similar strategy. See the API docs for the endpoints and required param, body etc.
+
+### Rate Limiting
+- APIs have a default rate limit applied. Excessive requests will be throttled with 429 Too Many Requests http response.
+
+### Data Fetching
+- To fetch the news articles from `NewsAPI`, `The Guardian` and `The New York Times`, there is an artisan command:
+
+    ```./vendor/bin/sail artisan news:fetch```
+
+- It takes an argument of list of sources (newsapi, nytimes, theguardian), and a `--search` option:
+
+
+    ./vendor/bin/sail artisan news:fetch newsapi nytimes theguardian --search=apple
+
+- The `news:fetch` command keeps running in the background every hour using the Laravel Scheduler. To run scheduler locally, run:
+
+
+    ./vendor/bin/sail artisan schedule:work
+
+- In Production, a cronjob must be set up like this:
+
+        * * * * * cd /path-to-project && php artisan schedule:run >> /dev/null 2>&1
+  

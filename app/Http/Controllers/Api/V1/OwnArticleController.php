@@ -15,6 +15,8 @@ final class OwnArticleController
     /**
      * Fetch preferred articles of a logged-in user
      *
+     * This endpoint returns the articles based on user's saved preferences
+     *
      * @response array{
      * data: ArticleResource[],
      * links: array{
@@ -41,7 +43,7 @@ final class OwnArticleController
     #[QueryParameter(name: 'to_date', description: 'The ending date till which the articles should be fetched', type: 'string')]
     public function __invoke(Request $request)
     {
-        $cacheKey = 'preferred_articles';
+        $cacheKey = 'preferred_articles:'.\auth()->id();
 
         if ($request->query()) {
             $queryParams = implode('|', $request->query());

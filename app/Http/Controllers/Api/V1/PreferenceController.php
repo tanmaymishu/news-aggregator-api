@@ -32,7 +32,7 @@ final class PreferenceController
      */
     public function update(PreferenceStoreRequest $request)
     {
-        Cache::forget('preferred_articles');
+        Cache::forget('preferred_articles:'.\auth()->id());
 
         $pref = Preference::updateOrCreate(
             ['user_id' => Auth::id()],
