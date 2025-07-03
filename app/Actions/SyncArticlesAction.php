@@ -23,19 +23,19 @@ final class SyncArticlesAction
             );
 
             Source::query()->upsert(
-                collect($attributes)->pluck('source')->map(fn($source) => ['name' => $source])->toArray(),
+                collect($attributes)->pluck('source')->map(fn ($source) => ['name' => $source])->toArray(),
                 ['name'],
                 ['name'],
             );
 
             Author::query()->upsert(
-                collect($attributes)->pluck('author')->map(fn($author) => ['name' => $author])->toArray(),
+                collect($attributes)->pluck('author')->map(fn ($author) => ['name' => $author])->toArray(),
                 ['name'],
                 ['name'],
             );
 
             Category::query()->upsert(
-                collect($attributes)->pluck('category')->map(fn($category) => ['name' => $category])->toArray(),
+                collect($attributes)->pluck('category')->map(fn ($category) => ['name' => $category])->toArray(),
                 ['name'],
                 ['name'],
             );
