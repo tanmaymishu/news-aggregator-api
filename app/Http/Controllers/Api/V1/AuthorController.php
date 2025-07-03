@@ -15,6 +15,11 @@ final class AuthorController
      * List all the authors.
      *
      * @unauthenticated
+     *
+     * @response array{
+     * data: Author[],
+     * message: string
+     * }
      */
     public function __invoke(Request $request): JsonResponse
     {

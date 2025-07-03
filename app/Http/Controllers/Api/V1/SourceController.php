@@ -15,6 +15,11 @@ final class SourceController
      * List all the sources.
      *
      * @unauthenticated
+     *
+     * @response array{
+     * data: Source[],
+     * message: string
+     * }
      */
     public function __invoke(Request $request): JsonResponse
     {

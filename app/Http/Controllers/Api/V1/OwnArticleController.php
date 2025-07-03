@@ -19,6 +19,7 @@ final class OwnArticleController
      *
      * @response array{
      * data: ArticleResource[],
+     * message: "Articles Retrieved!",
      * links: array{
      * "first": "http://localhost/api/v1/own-articles?page=1",
      * "last": null,

@@ -32,6 +32,7 @@ final class ArticleController
      *
      * @response array{
      * data: ArticleResource[],
+     * message: "Articles Retrieved!",
      * links: array{
      * "first": "http://localhost/api/v1/articles?page=1",
      * "last": null,

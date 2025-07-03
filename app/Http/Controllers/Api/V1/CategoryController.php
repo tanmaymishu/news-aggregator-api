@@ -15,6 +15,11 @@ final class CategoryController
      * List all the categories.
      *
      * @unauthenticated
+     *
+     * @response array{
+     *  data: Category[],
+     *  message: string
+     *  }
      */
     public function __invoke(Request $request): JsonResponse
     {

@@ -41,6 +41,15 @@ final class SyncArticlesAction
             );
         }, 5);
 
+        /**
+         * Cache needs to be forgotten, otherwise new data won't be persisted if
+         * the last remember window is shorter than 1 hour.
+         */
+        Cache::forget('articles');
+        Cache::forget('sources');
+        Cache::forget('categories');
+        Cache::forget('authors');
+
         Cache::remember('articles', now()->addHour(), fn () => Article::orderByDesc('published_at')->simplePaginate());
         Cache::remember('sources', now()->addHour(), fn () => Source::latest()->get());
         Cache::remember('categories', now()->addHour(), fn () => Category::latest()->get());
