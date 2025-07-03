@@ -97,13 +97,19 @@ The request body is editable. The endpoints are also directly available live at:
 
 ### Running tests
 
-To run tests with coverage report run the following command:
+To run tests with coverage report (minimum 80%) run the following command:
 
-    ./vendor/bin/sail artisan test --coverage
+    ./vendor/bin/sail artisan test --coverage --min=80
 
 ### Static analysis
 
     ./vendor/bin/sail composer lint
+
+### Type Coverage
+
+To run tests with type coverage report (minimum 90%) run the following command:
+
+    ./vendor/bin/sail artisan test --type-coverage --memory-limit=256M --min=90
 
 ### Format
 

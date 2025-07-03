@@ -63,7 +63,8 @@
         ],
         "test": [
             "@php artisan config:clear --ansi",
-            "@php artisan test"
+            "@php artisan test --type-coverage --memory-limit=256M --min=90",
+            "@php artisan test --coverage --min=80"
         ],
         "lint": [
             "./vendor/bin/phpstan analyse app --memory-limit=256M"
