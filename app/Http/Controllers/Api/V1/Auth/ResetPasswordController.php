@@ -16,6 +16,7 @@ class ResetPasswordController extends Controller
     /**
      * Show the password reset form.
      *
+     * @unauthenticated
      * @param Request $request
      * @param string $token
      * @return \Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|object
@@ -28,6 +29,7 @@ class ResetPasswordController extends Controller
     /**
      * Reset the password.
      *
+     * @unauthenticated
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws ValidationException

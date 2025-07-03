@@ -2,6 +2,8 @@
 
 namespace App\Services\News;
 
+use Illuminate\Support\Collection;
+
 abstract class NewsSource
 {
     const NEWSAPI_ID = 'newsapi';
@@ -16,7 +18,17 @@ abstract class NewsSource
 
     protected array $searchResults;
 
-    protected array $articles;
+    protected Collection $articles;
+
+    public function __construct()
+    {
+        $this->articles = collect();
+        $this->configure();
+    }
+
+    abstract protected function configure(): void;
+    abstract public function mapArticle(array $article): array;
+    abstract protected function getEndpoint(): string;
 
     use InteractsWithNewsSource;
 }

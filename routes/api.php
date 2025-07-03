@@ -40,7 +40,7 @@ Route::prefix('v1')->group(function () {
             ->middleware(['signed'])
             ->name('verification.verify');
 
-        Route::post('/email/verification-notification', [EmailVerificationController::class, 'notify'])
+        Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])
             ->middleware(['throttle:6,1'])
             ->name('verification.send');
 
@@ -48,7 +48,7 @@ Route::prefix('v1')->group(function () {
             return response()->json(['data' => auth()->user(), 'message' => 'User retrieved successfully']);
         });
 
-        Route::delete('/logout', [LoginController::class, 'destroy']);
+        Route::delete('/logout', [LoginController::class, 'destroy'])->name('logout');
 
         Route::middleware(['verified'])->group(function () {
             Route::get('/own-articles', OwnArticleController::class);

@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'category',
         'source',
@@ -27,8 +30,13 @@ class Article extends Model
      * Get articles based on user's saved preferences
      */
     #[Scope]
-    protected function preferred(Builder $query, Preference $preference): Builder
+    protected function preferred(Builder $query, ?Preference $preference): Builder
     {
+        // If the user has not yet set a preference, skip filtering.
+        if (empty($preference)) {
+            return $query;
+        }
+
         return $query->where(function ($query) use ($preference) {
             if ($preference->sources) {
                 $query->whereIn('source', $preference->sources);

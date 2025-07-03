@@ -12,6 +12,7 @@ class RegistrationController
     /**
      * Register a new user.
      *
+     * @unauthenticated
      * @param RegistrationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */

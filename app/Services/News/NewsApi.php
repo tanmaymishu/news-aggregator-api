@@ -2,29 +2,21 @@
 
 namespace App\Services\News;
 
+use App\Exceptions\NewsSourceException;
+
 class NewsApi extends NewsSource implements Sourcable
 {
-    public function __construct()
-    {
-        $newsApiId = NewsSource::NEWSAPI_ID;
-
-        $this->baseUrl = config("services.news.{$newsApiId}.base_url");
-        $this->queryParams = [
-            'language' => 'en',
-            'apiKey' => config("services.news.{$newsApiId}.key"),
-            'pageSize' => config("services.news.{$newsApiId}.page_size"),
-        ];
-    }
-
     public function search(?string $query): NewsSource
     {
         $this->queryParams['q'] = $query ?? 'headline';
 
-        $firstResponse = $this->fetch('/everything');
-        if (! $firstResponse->ok()) {
-            throw new \RuntimeException("Failed to fetch articles from NewsApi {$firstResponse->body()}");
+        $firstResponse = $this->fetch($this->getEndpoint());
+
+        if (! $firstResponse->successful()) {
+            throw new NewsSourceException("Failed to fetch articles from NewsApi {$firstResponse->body()}");
         }
-        $allResults = $firstResponse->json('articles');
+
+        $this->searchResults = $firstResponse->json('articles', []);
 
         // TODO: NewsAPI v2 is limited to 100 results for a "developer" account.
         // So commenting the pagination.
@@ -44,13 +36,17 @@ class NewsApi extends NewsSource implements Sourcable
         //            }
         //        }
 
-        $this->searchResults = $allResults;
-
         return $this;
     }
 
     public function mapArticle(array $article): array
     {
+        // If some article doesn't even have a title or publish date field,
+        // do not add that article.
+        if (empty($article['title']) || empty($article['publishedAt'])) {
+            return [];
+        }
+
         return [
             'title' => $article['title'],
             'description' => $article['description'] ?? $article['title'],
@@ -60,7 +56,24 @@ class NewsApi extends NewsSource implements Sourcable
             'author' => $article['author'] ?? 'Staff Reporter',
             'web_url' => $article['url'] ?? '',
             'featured_image_url' => $article['urlToImage'] ?? '',
-            'published_at' => date('Y-m-d H:i:s', strtotime($article['publishedAt'] ?? now()->toDateString())),
+            'published_at' => $this->parseDate($article['publishedAt']),
         ];
+    }
+
+    protected function configure(): void
+    {
+        $newsApiId = NewsSource::NEWSAPI_ID;
+
+        $this->baseUrl = config("services.news.{$newsApiId}.base_url");
+        $this->queryParams = [
+            'language' => 'en',
+            'apiKey' => config("services.news.{$newsApiId}.key"),
+            'pageSize' => config("services.news.{$newsApiId}.page_size"),
+        ];
+    }
+
+    protected function getEndpoint(): string
+    {
+        return '/everything';
     }
 }

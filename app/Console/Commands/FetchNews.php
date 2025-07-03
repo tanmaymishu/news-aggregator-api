@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Exceptions\NewsSourceException;
 use App\Services\News\Sourcable;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -32,8 +33,9 @@ class FetchNews extends Command
         $filteredSources = $this->validateSources();
 
         // If even after validation, all the user-provided
-        // sources are invalid, fallback to the defaults as
-        // defined in the sources constant.
+        // sources are invalid, and got empty sources
+        // fallback to the defaults as defined in the
+        // sources constant.
         if ($filteredSources->count() === 0) {
             $filteredSources = collect(self::sources);
         }
@@ -41,7 +43,11 @@ class FetchNews extends Command
         $this->info('Fetching new articles. This may take a while, please be patient.');
         $filteredSources->each(function ($source) {
             $this->info("Fetching for source {$source}");
-            $this->collectFromDataSource(app()->make($source));
+            try {
+                $this->collectFromDataSource(app()->make($source));
+            } catch (NewsSourceException $e) {
+                $this->info("Error occurred while fetching from {$source}:\n {$e->getMessage()}");
+            }
         });
     }
 
@@ -55,7 +61,6 @@ class FetchNews extends Command
     private function validateSources(): Collection
     {
         $args = $this->argument('source');
-
         // If no arg is provided, all default sources are valid.
         if (count($args) === 0) {
             return collect(self::sources);
@@ -66,6 +71,8 @@ class FetchNews extends Command
 
         // If args are provided, take the intersected ones and discard
         // any missing source/misspelled source.
+        // e.g. if `php artisan news:fetch newsapi asfsdfd` is run,
+        // only newsapi will be accepted, asfsdfd will be discarded.
         return $sources->intersect(self::sources);
     }
 }

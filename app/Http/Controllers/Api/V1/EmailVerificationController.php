@@ -27,7 +27,7 @@ class EmailVerificationController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function notify(Request $request)
+    public function send(Request $request)
     {
         $request->user()->sendEmailVerificationNotification();
 

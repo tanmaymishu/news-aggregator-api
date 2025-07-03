@@ -13,6 +13,16 @@ class LoginController
     /**
      * Authenticate user and create token/session.
      *
+     * This endpoint is both mobile and SPA-safe.
+     * Meaning, if a React/Vue app hits this route after
+     * /sanctum/csrf-cookie is hit, the returned token
+     * will not be stored on the browser for security reasons.
+     *
+     * However, if a non-browser user agent such as mobile hits
+     * this endpoint, the returned token should be passed to the
+     * subsequent requests in the Authorization header as a Bearer token.
+     *
+     * @unauthenticated
      * @param LoginStoreRequest $request
      * @return \Illuminate\Http\JsonResponse
      * @throws ValidationException

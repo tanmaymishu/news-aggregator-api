@@ -2,30 +2,17 @@
 
 namespace App\Services\News;
 
+use App\Exceptions\NewsSourceException;
+
 class NYTimes extends NewsSource implements Sourcable
 {
-    public function __construct()
-    {
-        $nyTimesId = NewsSource::NYTIMES_ID;
-
-        $this->baseUrl = config("services.news.{$nyTimesId}.base_url");
-        $this->queryParams = [
-            'page-size' => config("services.news.{$nyTimesId}.page_size"),
-            'begin_date' => today()->subDay()->format('Ymd'),
-            'end_date' => today()->format('Ymd'),
-            'api-key' => config("services.news.{$nyTimesId}.key"),
-        ];
-    }
-
     public function search(?string $query): NewsSource
     {
-        $path = '/svc/search/v2/articlesearch.json';
-
         $this->queryParams['q'] = $query ?? '';
-        $firstResponse = $this->fetch($path);
+        $firstResponse = $this->fetch($this->getEndpoint());
 
         if (! $firstResponse->ok()) {
-            throw new \RuntimeException("Failed to fetch articles from NewsApi {$firstResponse->body()}");
+            throw new NewsSourceException("Failed to fetch articles from NYTimes {$firstResponse->body()}");
         }
 
         $totalPages = 100; // Enforced by NYTimes API
@@ -34,7 +21,7 @@ class NYTimes extends NewsSource implements Sourcable
         for ($i = 2; $i <= $totalPages; $i++) {
             $this->queryParams['page'] = $i;
 
-            $response = $this->fetch($path);
+            $response = $this->fetch($this->getEndpoint());
             if ($response->ok() && $results = $response->json('response.docs')) {
                 foreach ($results as $result) {
                     $allResults[] = $result;
@@ -52,6 +39,12 @@ class NYTimes extends NewsSource implements Sourcable
 
     public function mapArticle(array $article): array
     {
+        // If some article doesn't even have a title or publish date field,
+        // do not add that article.
+        if (empty($article['headline']['main']) || empty($article['pub_date'])) {
+            return [];
+        }
+
         return [
             'title' => $article['headline']['main'],
             'description' => $article['snippet'] ?? $article['headline']['main'],
@@ -61,7 +54,25 @@ class NYTimes extends NewsSource implements Sourcable
             'author' => $article['byline']['original'] ?? 'Staff Reporter',
             'web_url' => $article['web_url'] ?? '',
             'featured_image_url' => $article['multimedia']['default']['url'] ?? '',
-            'published_at' => date('Y-m-d H:i:s', strtotime($article['pub_date'] ?? now()->toDateString())),
+            'published_at' => $this->parseDate($article['pub_date']),
         ];
+    }
+
+    protected function configure(): void
+    {
+        $nyTimesId = NewsSource::NYTIMES_ID;
+
+        $this->baseUrl = config("services.news.{$nyTimesId}.base_url");
+        $this->queryParams = [
+            'page-size' => config("services.news.{$nyTimesId}.page_size"),
+            'begin_date' => today()->subDay()->format('Ymd'),
+            'end_date' => today()->format('Ymd'),
+            'api-key' => config("services.news.{$nyTimesId}.key"),
+        ];
+    }
+
+    protected function getEndpoint(): string
+    {
+        return '/svc/search/v2/articlesearch.json';
     }
 }
