@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\Article;
+use App\Models\Author;
+use App\Models\Category;
+use App\Models\Source;
 use App\Models\User;
 
 describe('personalized articles', function () {
@@ -19,6 +22,34 @@ describe('personalized articles', function () {
 
         $response->assertStatus(200)
             ->assertJsonFragment(['data' => $articles->toArray()]);
+    });
+
+    test('can be retrieved based on the saved preferences', function () {
+        // These should not be in the response
+        Article::factory(2)->create();
+
+        $preferredSource = 'WSJ';
+        $preferredCategory = 'Sport';
+        $preferredAuthor = 'Staff Reporter';
+
+        Source::factory()->create(['name' => $preferredSource]);
+        Category::factory()->create(['name' => $preferredCategory]);
+        Author::factory()->create(['name' => $preferredAuthor]);
+
+        // These should be in the response (Total: 6, not 8)
+        Article::factory(2)->create(['category' => $preferredCategory]);
+        Article::factory(2)->create(['source' => $preferredSource]);
+        Article::factory(2)->create(['author' => $preferredAuthor]);
+
+        $this->actingAs($this->user)->patchJson('/api/v1/preferences', [
+            'sources' => [$preferredSource],
+            'categories' => [$preferredCategory],
+            'authors' => [$preferredAuthor],
+        ])->assertOk();
+
+        $this->actingAs($this->user)->getJson('/api/v1/own-articles')
+            ->assertOk()
+            ->assertJsonCount(6, 'data');
     });
 
     test('can be filtered by source', function () {
