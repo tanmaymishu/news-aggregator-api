@@ -19,6 +19,7 @@ final class PreferenceController
      * data: Preference,
      * message: "Fetched preferences",
      * }
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request)
