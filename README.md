@@ -80,10 +80,6 @@ The application should be running on http://localhost/
 
     ./vendor/bin/sail artisan key:generate
 
-### Stop the application:
-
-    ./vendor/bin/sail down
-
 ### Clearing the cache
 
     ./vendor/bin/sail artisan cache:clear
@@ -92,6 +88,10 @@ The application should be running on http://localhost/
 
 Head over to http://localhost and an interactive API docs page will appear, where you can provide things like route parameters, query parameters, bearer token, request body, etc.
 The request body is editable. The endpoints are also directly available live at: https://newsapi.tanmaydas.com
+
+### Stop the application:
+
+    ./vendor/bin/sail down
 
 ## Code Quality
 
