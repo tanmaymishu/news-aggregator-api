@@ -15,6 +15,10 @@ final class PreferenceController
     /**
      * Fetch the preferences of the currently logged-in user.
      *
+     * @response array{
+     * data: Preference,
+     * message: "Fetched preferences",
+     * }
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request)
@@ -27,6 +31,11 @@ final class PreferenceController
 
     /**
      * Update user preferences for custom news feed.
+     *
+     * @response array{
+     * data: Preference,
+     * message: "Preferences updated!",
+     * }
      *
      * @return \Illuminate\Http\JsonResponse
      */
