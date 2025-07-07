@@ -64,7 +64,7 @@ final class NewsApi extends NewsSource implements Sourcable
 
     protected function configure(): void
     {
-        $newsApiId = NewsSource::NEWSAPI_ID;
+        $newsApiId = parent::NEWSAPI_ID;
 
         $this->baseUrl = config("services.news.{$newsApiId}.base_url");
         $this->queryParams = [

@@ -10,9 +10,5 @@ interface Sourcable
 {
     public function search(?string $query): NewsSource;
 
-    public function normalize(): NewsSource;
-
-    public function save(): NewsSource;
-
-    public function getArticles(): Collection;
+    public function normalize(): Collection;
 }

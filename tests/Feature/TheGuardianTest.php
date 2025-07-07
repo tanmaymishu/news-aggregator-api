@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\NewsSourceException;
+use App\Services\News\Aggregator;
 use App\Services\News\TheGuardian;
 use Illuminate\Support\Facades\Http;
 
@@ -18,7 +19,7 @@ describe('TheGuardian source aggregation pipeline', function () {
     });
 
     test('saving an empty articles collection throws exception', function () {
-        expect(fn () => (new TheGuardian)->save())->toThrow(NewsSourceException::class);
+        expect(fn () => (new Aggregator)->setSource(new TheGuardian)->save())->toThrow(NewsSourceException::class);
     });
 
     test('an article can be mapped', function () {

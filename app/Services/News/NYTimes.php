@@ -62,7 +62,7 @@ final class NYTimes extends NewsSource implements Sourcable
 
     protected function configure(): void
     {
-        $nyTimesId = NewsSource::NYTIMES_ID;
+        $nyTimesId = parent::NYTIMES_ID;
 
         $this->baseUrl = config("services.news.{$nyTimesId}.base_url");
         $this->queryParams = [

@@ -60,7 +60,7 @@ final class TheGuardian extends NewsSource implements Sourcable
 
     protected function configure(): void
     {
-        $theGuardianId = NewsSource::THEGUARDIAN_ID;
+        $theGuardianId = parent::THEGUARDIAN_ID;
 
         $this->baseUrl = config("services.news.{$theGuardianId}.base_url");
         $this->queryParams = [
