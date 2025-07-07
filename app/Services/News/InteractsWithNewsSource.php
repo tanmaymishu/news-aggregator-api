@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\News;
 
-use App\Actions\SyncArticlesAction;
 use App\Exceptions\NewsSourceException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
@@ -17,30 +16,14 @@ trait InteractsWithNewsSource
         return $this->searchResults;
     }
 
-    public function getArticles(): Collection
-    {
-        return $this->articles;
-    }
-
-    public function normalize(): NewsSource
+    public function normalize(): Collection
     {
         $this->assertSearchResults();
 
-        $this->articles = collect($this->searchResults)
+        return collect($this->searchResults)
             ->map(fn ($article) => $this->mapArticle($article))
-            ->filter()
+            ->filter() // Remove empty arrays
             ->values();
-
-        return $this;
-    }
-
-    public function save(): NewsSource
-    {
-        $this->assertArticles();
-
-        (new SyncArticlesAction)->handle($this->articles->toArray());
-
-        return $this;
     }
 
     public function fetch(string $path): Response
@@ -68,13 +51,6 @@ trait InteractsWithNewsSource
     {
         if (empty($this->searchResults)) {
             throw new NewsSourceException('No search results found');
-        }
-    }
-
-    private function assertArticles()
-    {
-        if ($this->articles->isEmpty()) {
-            throw new NewsSourceException('No articles to save');
         }
     }
 

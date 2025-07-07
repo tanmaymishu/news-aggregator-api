@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\NewsSourceException;
+use App\Services\News\Aggregator;
 use App\Services\News\NYTimes;
 use Illuminate\Support\Facades\Http;
 
@@ -18,7 +19,7 @@ describe('NYTimes source aggregation pipeline', function () {
     });
 
     test('saving an empty articles collection throws exception', function () {
-        expect(fn () => (new NYTimes)->save())->toThrow(NewsSourceException::class);
+        expect(fn () => (new Aggregator)->setSource(new NYTimes)->save())->toThrow(NewsSourceException::class);
     });
 
     test('an article can be mapped', function () {

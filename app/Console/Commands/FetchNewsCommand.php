@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Exceptions\NewsSourceException;
-use App\Services\News\Sourcable;
+use App\Services\News\Aggregator;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Collection;
 
 final class FetchNewsCommand extends Command
@@ -46,18 +47,16 @@ final class FetchNewsCommand extends Command
         $filteredSources->each(function ($source) {
             $this->info("Fetching for source {$source}");
             try {
-                $this->collectFromDataSource(app()->make($source));
+                (new Aggregator)
+                    ->setSource(app()->make($source))
+                    ->aggregate($this->option('search'))
+                    ->save();
             } catch (NewsSourceException $e) {
                 $this->info("Error occurred while fetching from {$source}:\n {$e->getMessage()}");
+            } catch (BindingResolutionException $e) {
+                $this->info("The instance not found in the container for source {$source}:\n {$e->getMessage()}");
             }
         });
-    }
-
-    private function collectFromDataSource(Sourcable $source): void
-    {
-        $source->search($this->option('search'))
-            ->normalize()
-            ->save();
     }
 
     private function validateSources(): Collection
