@@ -33,6 +33,9 @@ The following environment variables are required for this app to function:
 NEWSAPI_KEY=
 NYTIMES_KEY=
 THEGUARDIAN_KEY=
+
+WWWGROUP=1000
+WWWUSER=1000
 ```
 
 ### Port configuration:
