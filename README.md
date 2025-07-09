@@ -60,18 +60,18 @@ Finally, please make sure the local port 80 available, as the app will run on po
 
 ### Installing Dependencies:
 
-    docker run --rm \
-       -u "$(id -u):$(id -g)" \
-       -v "$(pwd):/var/www/html" \
-       -w /var/www/html \
-       laravelsail/php84-composer:latest \
-       composer install --ignore-platform-reqs
+    docker compose build --no-cache
+    docker compose exec laravel.test composer install
 
 ### Launch the app
 
-To start the docker containers with Laravel Sail in detached mode run:
+To start the docker containers with Laravel Sail or Docker Compose in detached mode run:
 
     ./vendor/bin/sail up -d
+
+or,
+
+    docker compose up -d
 
 The application should be running on http://localhost/
 
@@ -79,13 +79,26 @@ The application should be running on http://localhost/
 
     ./vendor/bin/sail artisan migrate:fresh --seed
 
+or,
+
+    docker compose exec laravel.test php artisan migrate:fresh --seed
+
 ### Generate the application key:
 
     ./vendor/bin/sail artisan key:generate
 
+or,
+
+    docker compose exec laravel.test php artisan key:generate
+
+
 ### Clearing the cache
 
     ./vendor/bin/sail artisan cache:clear
+
+or,
+
+    docker compose exec laravel.test php artisan cache:clear
 
 ### Endpoint testing from the UI
 
@@ -95,6 +108,10 @@ The request body is editable. The endpoints are also directly available live at:
 ### Stop the application:
 
     ./vendor/bin/sail down
+
+or,
+
+    docker compose down
 
 ## Code Quality
 
