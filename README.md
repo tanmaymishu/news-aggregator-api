@@ -157,6 +157,26 @@ To run tests with type coverage report (minimum 90%) run the following command:
 ### Deploying on Prod:
 - There is also a `docker-compose.prod.yml` file for deploying the app to a live environment. Although it's not fully production-grade, but can be used for a quick glance. A version of this app is deployed at https://newsapi.tanmaydas.com on a cheapest Hetzner VM. An accompanying NextJS application is also created for consuming the APIs and deployed at https://news.tanmaydas.com using Vercel and managing the DNS through Cloudflare.
 - A Caddyfile is also provided for automatic SSL certificate generation. The domain can be changed before deployment.
+- Add a Dockerfile with the following content in the project root:
+
+    ```Dockerfile
+    FROM php:8.4-fpm
+
+    # Install system dependencies and PDO MySQL extension
+    RUN apt-get update && apt-get install -y \
+        libpng-dev \
+        libonig-dev \
+        libxml2-dev \
+        zip \
+        unzip \
+        && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd \
+        && pecl install redis && docker-php-ext-enable redis
+
+    # Optional: Install Composer globally
+    COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+    WORKDIR /var/www/html
+    ```
 
 - Frontend Repo: https://github.com/tanmaymishu/news
 - Live URL: https://news.tanmaydas.com
