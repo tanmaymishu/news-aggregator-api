@@ -29,6 +29,7 @@ final class ResetPasswordController
                 'email' => $request->query('email'),
             ]);
         }
+
         return redirect(config('app.frontend_url').'/reset-password?token='.$token.'&email='.$request->query('email'));
     }
 
