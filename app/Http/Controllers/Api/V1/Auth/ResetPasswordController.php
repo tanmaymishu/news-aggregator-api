@@ -23,7 +23,13 @@ final class ResetPasswordController
      */
     public function show(Request $request, string $token)
     {
-        return redirect(config('app.url').'/reset-password?token='.$token.'&email='.$request->query('email'));
+        if (empty(config('app.frontend_url'))) {
+            return view('auth.reset-password', [
+                'token' => $token,
+                'email' => $request->query('email'),
+            ]);
+        }
+        return redirect(config('app.frontend_url').'/reset-password?token='.$token.'&email='.$request->query('email'));
     }
 
     /**
@@ -60,6 +66,6 @@ final class ResetPasswordController
             return response()->json(['message' => __($status)]);
         }
 
-        throw ValidationException::withMessages(['email' => __($status)]);
+        throw ValidationException::withMessages(['message' => __($status)]);
     }
 }

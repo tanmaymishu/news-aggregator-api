@@ -14,7 +14,7 @@ final class EmailVerificationController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(EmailVerificationRequest $request)
+    public function show(EmailVerificationRequest $request)
     {
         $request->fulfill();
 
@@ -24,9 +24,15 @@ final class EmailVerificationController
     /**
      * Notify the user by sending verification email.
      *
+     * If the APP_FRONTEND_URL env variable is present,
+     * a link pointing to the frontend (e.g. nextjs) application will be sent.
+     * Otherwise, A link pointing to the backend (/api/v1/...) will be sent.
+     * In both cases, the link must be copied and pasted to a user-agent (e.g. Postman/Browser)
+     * where the user is already logged-in, either with an active session, or a bearer token.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request)
+    public function store(Request $request)
     {
         $request->user()->sendEmailVerificationNotification();
 

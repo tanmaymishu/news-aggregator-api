@@ -149,8 +149,12 @@ To run tests with type coverage report (minimum 90%) run the following command:
 - A user can register using `POST /api/v1/register` endpoint and login using `/api/v1/login` endpoint.
 - After registration and initial login, the user will be able to visit routes that do not require e-mail verification (e.g. `/api/v1/me` or `/api/v1/articles`). However, more restrictive resources (e.g. `/api/v1/own-articles`) are protected from unverified users and they will be required to verify their e-mail.
 - For token generation, Laravel Sanctum is utilized. For web clients like browsers, tokens aren't required to be saved in local storage or cookie, they will be taken care of automatically. For REST-Client, Mobile phones tokens are required and will be provided one from `POST /api/v1/login`.
-- The `POST /api/v1/email/verification-notification` endpoint is used to send an e-mail to the user and the e-mail will have a link pointing `GET ${APP_URL}/email/verify/{id}/{hash}` for verifying the email.
+- The `POST /api/v1/email/verification-notification` endpoint is used to send an e-mail to the user and the e-mail will have a link pointing either to `GET ${APP_URL}/api/v1/email/verify/{id}/{hash}`, or to `GET ${APP_FRONTEND_URL}/email/verify/{id}/{hash}` for verifying the email.
 - Password reset endpoints also work in similar strategy. See the API docs for the endpoints and required param, body etc.
+
+### A Note on "Frontend Views" for e-mail verification and password reset
+- For e-mail verification links, if the APP_FRONTEND_URL env variable is present, a link pointing to the frontend (e.g. nextjs) application will be sent. Otherwise, A link pointing to the backend (/api/v1/...) will be sent. In both cases, the link must be copied and pasted to a user-agent (e.g. Postman/Browser) where the user is already logged-in, either with a session, or a bearer token.
+- For password reset links, if the APP_FRONTEND_URL env variable is present, the link sent in e-mail will redirect to the frontend, otherwise, it will redirect to a simple form in the backend.
 
 ### Rate Limiting
 - APIs have a default rate limit applied. Excessive requests will be throttled with 429 Too Many Requests http response.

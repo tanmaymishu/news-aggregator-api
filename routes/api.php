@@ -23,7 +23,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/login', [LoginController::class, 'store'])->name('login');
     Route::post('/forgot-password', ForgotPasswordController::class)->name('password.email');
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'show'])
-        ->middleware('guest')
+        ->middleware(['guest', 'web'])
         ->name('password.reset');
     Route::post('/reset-password', [ResetPasswordController::class, 'store'])->name('password.update');
 
@@ -35,11 +35,11 @@ Route::prefix('v1')->group(function () {
 
     // Protected Routes
     Route::middleware(['throttle:60,1', 'auth:sanctum'])->group(function () {
-        Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'store'])
+        Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'show'])
             ->middleware(['signed'])
             ->name('verification.verify');
 
-        Route::post('/email/verification-notification', [EmailVerificationController::class, 'show'])
+        Route::post('/email/verification-notification', [EmailVerificationController::class, 'store'])
             ->middleware(['throttle:6,1'])
             ->name('verification.send');
 
